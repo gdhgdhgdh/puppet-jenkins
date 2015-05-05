@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+Puppet::Util::Log.level = :debug
+Puppet::Util::Log.newdestination(:console)
+
 describe 'jenkins::job' do
   let(:title) { 'myjob' }
 
@@ -91,6 +94,14 @@ eos
     let(:params) {{ :ensure => 'present', :config => quotes }}
     it { should contain_file('/tmp/myjob-config.xml')\
       .with_content('<config>the dog said "woof"</config>') }
+  end
+
+  describe 'with sourced config' do
+#    let(:source) { File.expand_path(File.dirname(__FILE__) + '/../fixtures/testjob.xml') }
+    let(:thesource) { 'puppet:///modules/qwerty/testjob.xml' }
+    let(:params) {{ :ensure => 'present', :source => thesource, :config => '' }}
+    it { should contain_file('/tmp/myjob-config.xml')\
+      .with_content('<config>sourcedconfig</config>') }
   end
 
 end
