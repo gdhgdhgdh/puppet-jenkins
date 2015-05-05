@@ -97,11 +97,10 @@ eos
   end
 
   describe 'with sourced config' do
-#    let(:source) { File.expand_path(File.dirname(__FILE__) + '/../fixtures/testjob.xml') }
-    let(:thesource) { 'puppet:///modules/qwerty/testjob.xml' }
+    let(:thesource) { File.expand_path(File.dirname(__FILE__) + '/../fixtures/testjob.xml') }
     let(:params) {{ :ensure => 'present', :source => thesource, :config => '' }}
     it { should contain_file('/tmp/myjob-config.xml')\
-      .with_content('<config>sourcedconfig</config>') }
+      .with_content(/sourcedconfig/) }
   end
 
 end
